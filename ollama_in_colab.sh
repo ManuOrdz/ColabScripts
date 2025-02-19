@@ -1,33 +1,66 @@
 #!/bin/bash
 #Script to automatize the ollama install and pull some models
 
-#########################################
-#Description: Download model from ollama
-#Globals:
-# None
-#Arguments:
-# Model Name
-#Outputs:
-# List of models installed
-#Returns:
-# 0 if successful, none-zero on error
-#########################################
-function download_model() {
-  ollama pull $1
+function install_ollama() {
+  echo "Installing Ollama"
+  curl -fsSL https://ollama.com/install.sh | sh
+  ollama -v
 }
 
-#Verify if ollama is install
-if ! which ollama >/dev/null; then
-  echo "ollama could no be found"
-  echo "Installing ollama"
-  curl -fsSL https://ollama.com/install.sh | sh
-  echo "Installing ollama successfull"
-else
-  echo "ollama already installed"
-  echo "running ollama"
-  ollama serve &
-  echo ""
-  sleep 1
-  read -p "What model do you want to download: " model
-  download_model $model
-fi
+function download_model() {
+  ollama pull ${1}
+}
+
+##
+#Color variables
+##
+
+green='\e[32m'
+blue='\e[34m'
+red='\e[31m'
+clear='\e[0m'
+
+##
+#Color function
+##
+
+ColorGreen() {
+  echo -ne $green$1$clear
+}
+
+ColorBlue() {
+  echo -ne $blue$1$clear
+}
+
+ColorRed() {
+  echo -ne $red$1$clear
+}
+
+menu() {
+  echo -ne "
+Menu
+$(ColorGreen '1)') Install Ollama
+$(ColorGreen '2)') Download models
+$(ColorGreen '0)') exit
+$(ColorBlue 'Please choose an option:')
+"
+  read a
+  case ${a} in
+  1)
+    install_ollama
+    menu
+    ;;
+  2)
+    read -p "What model do you want to download?: " model
+    echo ""
+    download_model ${model}
+    menu
+    ;;
+  0) exit ;;
+  *)
+    echo -e $red"Wrong option"$clear
+    ;;
+  esac
+}
+
+menu
