@@ -8,6 +8,7 @@ function install_ollama() {
 }
 
 function download_model() {
+  ollama serve &
   ollama pull ${1}
 }
 
