@@ -8,7 +8,7 @@ function install_ollama() {
 }
 
 function download_model() {
-  ollama pull ${1}
+  ollama pull $1
 }
 
 ##
@@ -55,7 +55,7 @@ $(ColorBlue 'Please choose an option:')
     sleep 1
     read -p "What model do you want to download?: " model
     echo ""
-    download_model ${model}
+    download_model $model
     menu
     ;;
   0) exit ;;
