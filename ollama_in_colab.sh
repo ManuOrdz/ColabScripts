@@ -41,6 +41,7 @@ menu() {
 Menu
 $(ColorGreen '1)') Install Ollama
 $(ColorGreen '2)') Download models
+$(ColorGreen '3)') Download nomic-embed-text and qwen2.5:14b
 $(ColorGreen '0)') exit
 $(ColorBlue 'Please choose an option:')
 "
@@ -56,6 +57,13 @@ $(ColorBlue 'Please choose an option:')
     read -p "What model do you want to download?: " model
     echo ""
     download_model $model
+    menu
+    ;;
+  3)
+    embed_model="nomic-embed-text"
+    llm_model="qwen2.5:14b"
+    download_model $embed_model
+    download_model $llm_model
     menu
     ;;
   0) exit ;;
