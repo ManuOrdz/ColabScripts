@@ -5,6 +5,7 @@ function install_ollama() {
   echo "Installing Ollama"
   curl -fsSL https://ollama.com/install.sh | sh
   ollama -v
+  ollama serve &
 }
 
 function download_model() {
@@ -60,6 +61,7 @@ $(ColorBlue 'Please choose an option:')
     menu
     ;;
   3)
+    ollama serve &
     embed_model="nomic-embed-text"
     llm_model="qwen2.5:14b"
     download_model $embed_model
